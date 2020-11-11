@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from '../components/app/app.component';
-import {ScraperModule} from "../components/scraper/scraper.module";
 import {rootConfig} from "../configs/routing/routing";
 import {HttpClientModule} from "@angular/common/http";
 
@@ -13,7 +12,6 @@ import {HttpClientModule} from "@angular/common/http";
   imports: [
     BrowserModule,
     HttpClientModule,
-    ScraperModule,
     rootConfig
   ],
   providers: [],
