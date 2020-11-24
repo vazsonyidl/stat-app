@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from '../components/app/app.component';
 import {rootConfig} from "../configs/routing/routing";
+import {ApiService} from "../services/api.service";
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import {rootConfig} from "../configs/routing/routing";
     HttpClientModule,
     rootConfig
   ],
-  providers: [],
+  providers: [ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
