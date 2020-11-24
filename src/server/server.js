@@ -1,23 +1,42 @@
-const bent = require('bent');
-const getJSON = bent('string');
-const jsdom = require('jsdom');
-const {JSDOM} = jsdom;
-
-console.time('start');
-let dom = '';
-(async () => {
-  try {
-    dom = await getJSON('http://www.ksh.hu/docs/hun/xstadat/xstadat_eves/i_wnt001a.html');
-    const parsed = new JSDOM(dom);
-    parsed.window.document.querySelectorAll('td').forEach(cell => {
-      const value = cell.innerHTML.trim();
-      const updated = value.replace(/<(span|sup)(.)*>(.)*(.)*<\/(span|sup)>/gm, '');
-      console.log(updated.match(/^[-]?([0-9]*[ |,]?)*$/gm), updated);
-    });
-  } catch (e) {
-    console.log(e);
+const request = require('request');
+const query = {
+  "query": [
+    {
+      "code": "Aasta",
+      "selection": {
+        "filter": "item",
+        "values": [
+          "2019"
+        ]
+      }
+    },
+    {
+      "code": "Näitaja",
+      "selection": {
+        "filter": "item",
+        "values": [
+          "1"
+        ]
+      }
+    }
+  ],
+  "response": {
+    "format": "json"
   }
-})();
+};
 
+const options = {
+  method: 'POST',
+  url: 'https://andmed.stat.ee/api/v1/en/stat/RV031',
+  json: query,
+  headers: {
+    "content-type": "application/json",
+    useQueryString: true
+  }
+};
 
-console.timeEnd('start');
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body.data);
+});

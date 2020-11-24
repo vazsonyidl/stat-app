@@ -7,5 +7,9 @@
     "bent": "^7.3.12",
     "cheerio": "^1.0.0-rc.3",
     "jsdom": "^16.4.0"
+  },
+  "devDependencies": {
+    "request": "^2.88.2",
+    "unirest": "^0.6.0"
   }
 }
