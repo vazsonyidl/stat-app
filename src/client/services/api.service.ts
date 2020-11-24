@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import {share} from "rxjs/operators";
 
 @Injectable()
-export class ApiService{
+export class ApiService {
   constructor(private readonly http: HttpClient) {
   }
 
