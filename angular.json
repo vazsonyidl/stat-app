@@ -24,8 +24,8 @@
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "src/client/favicon.ico",
+              "src/client/assets"
             ],
             "styles": [
               "src/client/styles.scss",
@@ -38,8 +38,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "src/client/environments/environment.ts",
+                  "with": "src/client/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -70,8 +70,7 @@
           "options": {
             "browserTarget": "stat-app:build",
             "host": "0.0.0.0",
-            "port": 4040,
-            "proxyConfig": "proxy.conf.json"
+            "port": 4040
           },
           "configurations": {
             "production": {
@@ -88,16 +87,16 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
+            "main": "src/client/test.ts",
+            "polyfills": "src/client/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "src/client/favicon.ico",
+              "src/client/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/client/styles.scss"
             ],
             "scripts": []
           }
@@ -128,6 +127,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "stat-app"
+    }
+  },
+  "defaultProject": "stat-app",
+  "cli": {
+    "packageManager": "yarn"
+  }
 }
