@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from '../components/app/app.component';
 import {rootConfig} from "../configs/routing/routing";
 import {ApiService} from "../services/api.service";
+import {HeaderModule} from "../components/header/header.module";
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import {ApiService} from "../services/api.service";
   imports: [
     BrowserModule,
     HttpClientModule,
-    rootConfig
+    rootConfig,
+    HeaderModule
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]
