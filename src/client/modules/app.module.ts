@@ -3,9 +3,11 @@ import {HttpClientModule} from "@angular/common/http";
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from '../components/app/app.component';
+import {HeaderModule} from "../components/header/header.module";
+import {MainPageModule} from "../pages/main/main.module";
+
 import {rootConfig} from "../configs/routing/routing";
 import {ApiService} from "../services/api.service";
-import {HeaderModule} from "../components/header/header.module";
 
 @NgModule({
   declarations: [
@@ -15,7 +17,8 @@ import {HeaderModule} from "../components/header/header.module";
     BrowserModule,
     HttpClientModule,
     rootConfig,
-    HeaderModule
+    HeaderModule,
+    MainPageModule
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]
