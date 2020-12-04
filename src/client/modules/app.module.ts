@@ -8,6 +8,7 @@ import {MainPageModule} from "../pages/main/main.module";
 
 import {rootConfig} from "../configs/routing/routing";
 import {ApiService} from "../services/api.service";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import {ApiService} from "../services/api.service";
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     rootConfig,
     HeaderModule,
