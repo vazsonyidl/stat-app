@@ -30,7 +30,8 @@
             "styles": [
               "src/client/styles.scss",
               "node_modules/mapbox-gl/dist/mapbox-gl.css",
-              "node_modules/leaflet/dist/leaflet.css"
+              "node_modules/leaflet/dist/leaflet.css",
+              "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"
             ],
             "scripts": []
           },
@@ -70,7 +71,8 @@
           "options": {
             "browserTarget": "stat-app:build",
             "host": "0.0.0.0",
-            "port": 4040
+            "port": 4040,
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {
