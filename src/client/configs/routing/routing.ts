@@ -1,11 +1,12 @@
 import {RouterModule, Routes} from "@angular/router";
 import {ModuleWithProviders} from '@angular/core';
-import {MapComponent} from "../../pages/map/map.component";
+
 import {NotFoundPageComponent} from "../../pages/not-found/not-found.page";
+import {MainPageComponent} from "../../pages/main/main.page";
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', redirectTo: 'map'},
-  {path: 'map', component: MapComponent},
+  {path: '', pathMatch: 'full', redirectTo: 'main'},
+  {path: 'main', component: MainPageComponent},
   {path: '404', component: NotFoundPageComponent},
   {path: '**', redirectTo: '404'}
 ];

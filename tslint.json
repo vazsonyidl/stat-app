@@ -34,6 +34,7 @@
     "use-pipe-decorator": true,
     "no-output-on-prefix-name": false,
     "import-blacklist": false,
-    "new-parens": true
+    "new-parens": true,
+    "array-type": [true, "generic"]
   }
 }

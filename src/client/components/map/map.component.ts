@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import * as L from 'leaflet';
-
-import {estonianData} from './states-data.constant';
+import {test} from "./us";
 
 @Component({
   selector: 'app-map',
@@ -13,7 +12,9 @@ export class MapComponent implements AfterViewInit {
   @ViewChild('map', {static: true}) map: ElementRef;
 
   ngAfterViewInit(): void {
-    const map = L.map(this.map.nativeElement).setView([37.8, -96], 4);
+    const map = L.map(this.map.nativeElement, {
+      maxBounds: [[70, -10], [50, 50]]
+    }).setView([60, 25], 5);
 
     L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=` + this.mapboxAccessToken, {
       id: 'mapbox/light-v9',
@@ -21,7 +22,7 @@ export class MapComponent implements AfterViewInit {
       tileSize: 512,
       zoomOffset: -1
     }).addTo(map);
-    L.geoJson(estonianData, {style: this.style}).addTo(map);
+    L.geoJson(test, {style: this.style}).addTo(map);
   }
 
   private getColor = (d) => {
