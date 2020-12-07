@@ -15,6 +15,7 @@ export interface SearchSchemaVariable {
 }
 
 export interface TransformedSchema {
+  code: string;
   text: string;
   value: { [key: string]: string };
 }

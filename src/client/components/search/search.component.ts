@@ -45,12 +45,13 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private setControls(results: Array<SearchSchemaVariable>): void {
     for (const result of results) {
-      this.formGroup.setControl(result?.text, new FormControl(''));
+      this.formGroup.registerControl(result?.code, new FormControl(''));
     }
   }
 
   private transformOptions(results: Array<SearchSchemaVariable>): Array<TransformedSchema> {
     return results.map(resp => ({
+      code: resp?.code,
       text: resp?.text,
       value: resp?.values?.reduce((acc, value, index) => {
         acc[value] = resp?.valueTexts[index];
@@ -61,7 +62,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private removeAllControl(): void {
     for (const option of this.options.value) {
-      this.formGroup.removeControl(option?.text);
+      this.formGroup.removeControl(option?.code);
     }
   }
 }
