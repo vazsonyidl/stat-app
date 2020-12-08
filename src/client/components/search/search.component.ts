@@ -41,6 +41,9 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public onSearch(): void {
     this.searchService.searchOptions.next(this.formGroup.value);
+    this.searchService.search(this.typeFormControl.value, this.formGroup.value).pipe(
+      takeUntil(this.destroy)
+    ).subscribe();
   }
 
   private setControls(results: Array<SearchSchemaVariable>): void {

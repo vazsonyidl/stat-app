@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {pluck} from 'rxjs/operators';
 
@@ -8,11 +8,17 @@ import {SearchSchemaVariable} from './search.interface';
 @Injectable()
 export class SearchService {
   public searchOptions = new BehaviorSubject<any>(null);
-  constructor(private apiService: ApiService) {}
+
+  constructor(private apiService: ApiService) {
+  }
 
   public getSchema(url: string): Observable<Array<SearchSchemaVariable>> {
     return this.apiService.get(url).pipe(
       pluck('variables')
     );
+  }
+
+  public search(url: string, searchParams?: { [key: string]: string | Array<string> }): Observable<any> {
+    return this.apiService.post(url, searchParams);
   }
 }

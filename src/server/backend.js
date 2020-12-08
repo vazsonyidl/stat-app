@@ -3,7 +3,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 
 const {getUnemploymentSchema} = require('./models/unemployment');
-const {getPrePrimaryBasic} = require('./models/preprimary_education');
+const {getPrePrimaryData, getFilteredPrePrimary} = require('./models/preprimary_education');
 
 const app = express();
 const port = process.env.PORT || 2000;
@@ -18,12 +18,13 @@ app.use(session({
 );
 
 app.get('/', (request, response) => {
-  response.send("Welcome to NODE API!");
-})
+  response.send('Welcome to NODE API!');
+});
 
 app.get('/unemployment_rate', getUnemploymentSchema);
-app.get('/education_preprimary', getPrePrimaryBasic);
+app.get('/education_preprimary', getPrePrimaryData);
+app.post('/education_preprimary', getFilteredPrePrimary);
 
-app.listen(port , () => {
+app.listen(port, () => {
   console.log(`Server running on: ${port}`);
-})
+});

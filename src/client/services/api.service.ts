@@ -28,10 +28,13 @@ export class ApiService {
   constructor(private readonly http: HttpClient) {
   }
 
-
   public get(url: string, options?: RequestOptions): Observable<any> {
     return this.http.get(url, {...baseOptions, ...options}).pipe(
       share()
     );
+  }
+
+  public post(url: string, params: { [key: string]: string | Array<string> } = {}): Observable<any> {
+    return this.http.post(url, {}, {...baseOptions, params});
   }
 }
