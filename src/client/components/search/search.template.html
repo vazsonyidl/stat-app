@@ -4,11 +4,12 @@
     <mat-option *ngFor="let type of availableTypes | async" [value]="type.url">{{type.name}}</mat-option>
   </mat-select>
 </mat-form-field>
-<ng-container [formGroup]="formGroup" *ngIf="response | async as _response">
-  <mat-form-field appearance="fill" *ngFor="let control of formGroup.controls | keyvalue; let index = index">
-    <mat-label>{{_response[index]?.text}}</mat-label>
-    <mat-select [formControlName]="control.key" multiple>
-      <mat-option *ngFor="let val of _response[index]?.value | keyvalue" [value]="val.key">{{val.value}}</mat-option>
+<ng-container [formGroup]="formGroup" *ngIf="options | async as _options">
+  <mat-form-field appearance="fill" *ngFor="let option of _options">
+    <mat-label>{{option?.text}}</mat-label>
+    <mat-select [formControlName]="option.code" multiple>
+      <mat-option *ngFor="let selectOption of option?.value | keyvalue" [value]="selectOption.key">{{selectOption.value}}</mat-option>
     </mat-select>
   </mat-form-field>
+  <button mat-raised-button color="primary" (click)="onSearch()">Search</button>
 </ng-container>
