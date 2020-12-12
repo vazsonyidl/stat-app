@@ -3,11 +3,11 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {pluck} from 'rxjs/operators';
 
 import {ApiService} from '../../services/api.service';
-import {SearchSchemaVariable} from './search.interface';
+import {SearchResponse, SearchSchemaVariable} from './search.interface';
 
 @Injectable()
 export class SearchService {
-  public searchOptions = new BehaviorSubject<any>(null);
+  public searchResponse = new BehaviorSubject<SearchResponse>(null);
 
   constructor(private apiService: ApiService) {
   }
