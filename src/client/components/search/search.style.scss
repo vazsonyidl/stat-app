@@ -1,3 +1,26 @@
 :host {
-  display: block;
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 100px;
+    grid-template-areas: 'search-params search-button';
+    align-items: center;
+    margin: 16px 8px 8px;
+  }
+
+  .search-params {
+    grid-area: search-params;
+
+    mat-form-field {
+      padding: 0 4px;
+    }
+  }
+
+  .search-button {
+    grid-area: search-button;
+
+    button {
+      width: 100%;
+      height: 45px;
+    }
+  }
 }

@@ -1,5 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {switchMap, takeUntil, tap} from 'rxjs/operators';
 
@@ -10,7 +10,8 @@ import {SearchService} from './search.service';
 @Component({
   selector: 'app-search',
   templateUrl: './search.template.html',
-  styleUrls: ['search.style.scss']
+  styleUrls: ['search.style.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchComponent implements OnInit, OnDestroy {
   public formGroup = new FormGroup({});
@@ -48,7 +49,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private setControls(results: Array<SearchSchemaVariable>): void {
     for (const result of results) {
-      this.formGroup.registerControl(result?.code, new FormControl(''));
+      this.formGroup.registerControl(result?.code, new FormControl('', Validators.required));
     }
   }
 
