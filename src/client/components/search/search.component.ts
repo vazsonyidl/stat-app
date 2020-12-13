@@ -4,7 +4,7 @@ import {BehaviorSubject, Subject} from 'rxjs';
 import {switchMap, takeUntil, tap} from 'rxjs/operators';
 
 import {SearchService} from './search.service';
-import {searchSchema} from './search.schema';
+import {allowedMultipleSelection, searchSchema} from './search.const';
 import {NameUrlPair, SearchResponse, SearchSchemaVariable, TransformedSchema} from './search.interface';
 
 @Component({
@@ -60,7 +60,8 @@ export class SearchComponent implements OnInit, OnDestroy {
       value: resp?.values?.reduce((acc, value, index) => {
         acc[value] = resp?.valueTexts[index];
         return acc;
-      }, {})
+      }, {}),
+      multiple: allowedMultipleSelection.includes(resp?.text)
     }));
   }
 

@@ -18,6 +18,7 @@ export interface TransformedSchema {
   code: string;
   text: string;
   value: { [key: string]: string };
+  multiple: boolean;
 }
 
 export interface SearchResponse {

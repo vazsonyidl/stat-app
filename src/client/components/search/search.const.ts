@@ -6,3 +6,7 @@ export const searchSchema: SearchSchemaInterface = {
     {name: 'Preprimary education by county', url: '/api/education_preprimary'}
     ]
 };
+
+export const allowedMultipleSelection = [
+  'County'
+];
