@@ -18,4 +18,29 @@ export interface TransformedSchema {
   code: string;
   text: string;
   value: { [key: string]: string };
+  multiple: boolean;
+}
+
+export interface SearchResponse {
+  columns: Array<ResponseColumns>;
+  comment: Array<any>;
+  data: Array<ResponseData>;
+  metadata: Array<ResponseMetaData>;
+}
+
+export interface ResponseData {
+  key: Array<string>;
+  values: Array<string>;
+}
+
+interface ResponseColumns {
+  code: string;
+  text: string;
+  type: string;
+}
+
+interface ResponseMetaData {
+  label: string;
+  source: string;
+  updated: Date | string;
 }

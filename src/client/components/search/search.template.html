@@ -10,7 +10,7 @@
       <mat-form-field *ngFor="let option of _options"
                       appearance="fill">
         <mat-label>{{option?.text}}</mat-label>
-        <mat-select [formControlName]="option.code" multiple>
+        <mat-select [formControlName]="option.code" [multiple]="option?.multiple">
           <mat-option *ngFor="let selectOption of option?.value | keyvalue"
                       [value]="selectOption.key">{{selectOption.value}}</mat-option>
         </mat-select>

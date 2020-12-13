@@ -3,9 +3,9 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {switchMap, takeUntil, tap} from 'rxjs/operators';
 
-import {searchSchema} from './search.schema';
-import {NameUrlPair, SearchSchemaVariable, TransformedSchema} from './search.interface';
 import {SearchService} from './search.service';
+import {allowedMultipleSelection, searchSchema} from './search.const';
+import {NameUrlPair, SearchResponse, SearchSchemaVariable, TransformedSchema} from './search.interface';
 
 @Component({
   selector: 'app-search',
@@ -41,9 +41,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public onSearch(): void {
-    this.searchService.searchOptions.next(this.formGroup.value);
     this.searchService.search(this.typeFormControl.value, this.formGroup.value).pipe(
-      takeUntil(this.destroy)
+      takeUntil(this.destroy),
+      tap((response: SearchResponse) => this.searchService.searchResponse.next(response))
     ).subscribe();
   }
 
@@ -60,7 +60,8 @@ export class SearchComponent implements OnInit, OnDestroy {
       value: resp?.values?.reduce((acc, value, index) => {
         acc[value] = resp?.valueTexts[index];
         return acc;
-      }, {})
+      }, {}),
+      multiple: allowedMultipleSelection.includes(resp?.text)
     }));
   }
 

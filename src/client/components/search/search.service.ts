@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {pluck} from 'rxjs/operators';
 
 import {ApiService} from '../../services/api.service';
-import {SearchSchemaVariable} from './search.interface';
+import {SearchResponse, SearchSchemaVariable} from './search.interface';
 
 @Injectable()
 export class SearchService {
-  public searchOptions = new BehaviorSubject<any>(null);
+  public searchResponse = new Subject<SearchResponse>();
 
   constructor(private apiService: ApiService) {
   }
