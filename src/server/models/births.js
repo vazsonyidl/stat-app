@@ -1,8 +1,7 @@
 const request = require('request');
 
 module.exports = {
-    getBirthBasic : async (req, resp) => {
-      console.log(req.query);
+    getBirthSchema : async (req, resp) => {
       const options = {
       method: 'GET',
       url: 'https://andmed.stat.ee/api/v1/en/stat/RV031',
