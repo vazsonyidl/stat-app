@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {switchMap, takeUntil, tap} from 'rxjs/operators';
 
-import {SearchService} from './search.service';
+import {SearchService, schemaCacheBuster} from './search.service';
 import {allowedMultipleSelection, searchSchema} from './search.const';
 import {NameUrlPair, SearchResponse, SearchSchemaVariable, TransformedSchema} from './search.interface';
 
@@ -29,13 +29,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.typeFormControl.valueChanges.pipe(
       takeUntil(this.destroy),
       switchMap((selectedTypeUrl: string) => this.searchService.getSchema(selectedTypeUrl)),
-      tap(() => this.removeAllControl()),
-      tap((results: Array<SearchSchemaVariable>) => this.setControls(results)),
-      tap((result) => this.options.next(this.transformOptions(result)))
+      tap((results: Array<SearchSchemaVariable>) => this.setUpControls(results)),
     ).subscribe();
   }
 
   public ngOnDestroy(): void {
+    schemaCacheBuster.next();
     this.destroy.next(true);
     this.destroy.complete();
   }
@@ -47,7 +46,13 @@ export class SearchComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  private setControls(results: Array<SearchSchemaVariable>): void {
+  private setUpControls = (results: Array<SearchSchemaVariable>) => {
+    this.removeAllControl();
+    this.registerControlsOnForm(results);
+    this.options.next(this.transformOptions(results));
+  };
+
+  private registerControlsOnForm(results: Array<SearchSchemaVariable>): void {
     for (const result of results) {
       this.formGroup.registerControl(result?.code, new FormControl('', Validators.required));
     }

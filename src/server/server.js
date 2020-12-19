@@ -1,42 +1,20 @@
-const request = require('request');
-const query = {
-  "query": [
-    {
-      "code": "Aasta",
-      "selection": {
-        "filter": "item",
-        "values": [
-          "2019"
-        ]
-      }
-    },
-    {
-      "code": "Näitaja",
-      "selection": {
-        "filter": "item",
-        "values": [
-          "1"
-        ]
-      }
-    }
-  ],
-  "response": {
-    "format": "json"
-  }
-};
+const express = require('express');
+const session = require('express-session');
+const bodyParser = require('body-parser');
 
-const options = {
-  method: 'POST',
-  url: 'https://andmed.stat.ee/api/v1/en/stat/RV031',
-  json: query,
-  headers: {
-    "content-type": "application/json",
-    useQueryString: true
-  }
-};
+const {setAppRoutes} = require('./routes/routes');
 
-request(options, function (error, response, body) {
-  if (error) throw new Error(error);
+const app = express();
+const port = process.env.PORT || 2000;
+setAppRoutes(app);
 
-  console.log(body.data);
-});
+app.set('port', port);
+app.use(bodyParser.json());
+app.use(session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false
+  }),
+);
+
+app.listen(port, () => console.log(`Server running on: ${port}`));
