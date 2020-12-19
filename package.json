@@ -25,6 +25,7 @@
     "mapbox-gl": "^1.13.0",
     "mapbox-gl-leaflet": "^0.0.13",
     "rxjs": "~6.6.0",
+    "ts-cacheable": "^1.0.2",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },

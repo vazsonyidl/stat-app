@@ -2,16 +2,22 @@ const request = require('request');
 const {transformSearchData} = require('./shared');
 
 module.exports = {
-  getUnemploymentSchema : async (req, resp) => {
+  getUnemploymentSchema: async (req, resp) => {
     const options = {
       method: 'GET',
       url: 'https://andmed.stat.ee/api/v1/en/stat/TT442',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
         useQueryString: true
       }
     };
-    request(options, (error, response, body)  => error ? resp.error({error: 'An error occurred'}) : resp.send(body));
+    request(options, (error, response, body) => {
+      if (error) resp.error({error: 'An error occurred'});
+      else {
+        resp.setHeader('Cache-Control', 'max-age=7200');
+        resp.send(body);
+      }
+    });
   },
 
   getFilteredUnemployment: async (req, resp) => {
@@ -27,4 +33,4 @@ module.exports = {
     };
     request(options, (error, response, body) => error ? resp.error({error: 'An error occurred'}) : resp.send(body));
   }
-}
+};
