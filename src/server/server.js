@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
@@ -14,7 +16,7 @@ app.use(session({
     secret: 'secret',
     resave: false,
     saveUninitialized: false
-  }),
+}),
 );
 
 app.listen(port, () => console.log(`Server running on: ${port}`));
