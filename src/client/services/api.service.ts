@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {share} from 'rxjs/operators';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {EMPTY, Observable} from 'rxjs';
+import {catchError, share} from 'rxjs/operators';
+import {NotificationService} from './notification.service';
 
 interface RequestOptions {
   headers?: HttpHeaders | {
@@ -25,7 +26,9 @@ const baseOptions: RequestOptions = {
 
 @Injectable()
 export class ApiService {
-  constructor(private readonly http: HttpClient) {
+  constructor(
+    private readonly http: HttpClient,
+    private readonly notificationService: NotificationService) {
   }
 
   public get(url: string, options?: RequestOptions): Observable<any> {
@@ -35,6 +38,11 @@ export class ApiService {
   }
 
   public post(url: string, params: { [key: string]: string | Array<string> } = {}): Observable<any> {
-    return this.http.post(url, {}, {...baseOptions, params});
+    return this.http.post(url, {}, {...baseOptions, params}).pipe(
+      catchError((error: HttpErrorResponse) => {
+        this.notificationService.attachNotification(error);
+        return EMPTY;
+      })
+    );
   }
 }
