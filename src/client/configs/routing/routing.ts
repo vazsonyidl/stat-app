@@ -1,8 +1,8 @@
-import {RouterModule, Routes} from "@angular/router";
+import {RouterModule, Routes} from '@angular/router';
 import {ModuleWithProviders} from '@angular/core';
 
-import {NotFoundPageComponent} from "../../pages/not-found/not-found.page";
-import {MainPageComponent} from "../../pages/main/main.page";
+import {NotFoundPageComponent} from '../../pages/not-found/not-found.page';
+import {MainPageComponent} from '../../pages/main/main.page';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'main'},

@@ -1,0 +1,47 @@
+@import 'src/client/styles/_styles';
+
+
+.container {
+  width: 200px;
+  height: 50px;
+  background-color: $white;
+  animation: appear-notification .2s ease-in, disappear-notification .2s ease-out 5s forwards;
+
+  .notification {
+    background-color: $white-opacity-1;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background-color: $grey-opacity-1;
+    animation: 5s progress-bar-fade-in linear reverse forwards;
+  }
+}
+
+
+@keyframes progress-bar-fade-in {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes appear-notification {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes disappear-notification {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

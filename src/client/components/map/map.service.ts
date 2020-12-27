@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Counties} from './map.interface';
-import {countyData} from './counties.constant';
+import {countyData} from './counties.const';
 
 @Injectable()
 export class MapService {

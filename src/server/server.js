@@ -1,14 +1,11 @@
-'use strict';
+import express from 'express';
+import session from 'express-session';
+import bodyParser from 'body-parser';
 
-const express = require('express');
-const session = require('express-session');
-const bodyParser = require('body-parser');
-
-const {setAppRoutes} = require('./routes/routes');
+import {setAppRoutes} from './routes/routes.js';
 
 const app = express();
 const port = process.env.PORT || 2000;
-setAppRoutes(app);
 
 app.set('port', port);
 app.use(bodyParser.json());
@@ -19,4 +16,5 @@ app.use(session({
 }),
 );
 
+setAppRoutes(app);
 app.listen(port, () => console.log(`Server running on: ${port}`));
