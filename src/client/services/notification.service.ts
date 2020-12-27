@@ -3,7 +3,8 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {Overlay, OverlayRef} from '@angular/cdk/overlay';
 import {ComponentPortal} from '@angular/cdk/portal';
 
-import {CONTAINER_DATA, NotificationComponent} from '../components/notification/notification.component';
+import {NotificationComponent} from '../components/notification/notification.component';
+import {CONTAINER_DATA} from '../components/notification/notification.const';
 
 @Injectable()
 export class NotificationService {
@@ -17,10 +18,12 @@ export class NotificationService {
     if (this.overlayRef) this.destroyOverlay();
 
     this.overlayRef = this.overlay.create({
-      positionStrategy: this.overlay.position()?.global().right('5px').top('10px')
+      positionStrategy: this.overlay.position()?.global().right('8px').top('4px')
     });
 
-    this.overlayRef.attach(new ComponentPortal(NotificationComponent, null, this.createInjector(error.message)));
+    this.overlayRef.attach(new ComponentPortal(NotificationComponent, null, this.createInjector(
+      `${error.status} - ${error.statusText}`))
+    );
   };
 
   private destroyOverlay = () => {
@@ -29,7 +32,7 @@ export class NotificationService {
   };
 
 
-  private createInjector = (dataToPass) => {
+  private createInjector = (dataToPass: string): Injector => {
     return Injector.create({
       parent: this._injector,
       providers: [{provide: CONTAINER_DATA, useValue: dataToPass}]
