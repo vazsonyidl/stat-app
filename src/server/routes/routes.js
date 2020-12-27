@@ -1,17 +1,28 @@
-'use strict';
+import {registerGetEndpoint, registerPostEndpoint} from '../models/register-endpoint.js';
+import {transformSearchData} from '../shared/shared.js';
+import {endpoints} from '../constants/endpoints.const.js';
+import {baseOptions} from '../constants/route-options.const.js';
 
-const {getUnemploymentSchema, getFilteredUnemployment} = require('../models/unemployment');
-const {getPrePrimarySchema, getFilteredPrePrimary} = require('../models/preprimary_education');
-const {getBirthSchema} = require('../models/births');
-
-module.exports = {
-    setAppRoutes: (app) => {
-        app.get('/births', getBirthSchema);
-
-        app.get('/unemployment_rate', getUnemploymentSchema);
-        app.post('/unemployment_rate', getFilteredUnemployment);
-
-        app.get('/education_preprimary', getPrePrimarySchema);
-        app.post('/education_preprimary', getFilteredPrePrimary);
-    }
+const setAppRoutes = (app) => {
+  for (let endpoint of endpoints) {
+    endpoint.methods.forEach(method => {
+      if (method === 'GET') {
+        app.get(endpoint.route, (req, resp) => registerGetEndpoint(req, resp, {
+            ...baseOptions,
+            method: method,
+            url: endpoint.url
+          })
+        );
+      } else if (method === 'POST') {
+        app.post(endpoint.route, (req, resp) => registerPostEndpoint(req, resp, {
+          ...baseOptions,
+          method: method,
+          url: endpoint.url,
+          json: transformSearchData(req?.query ?? {})
+        }));
+      }
+    });
+  }
 };
+
+export {setAppRoutes};
