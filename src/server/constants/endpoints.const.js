@@ -13,7 +13,12 @@ export const endpoints = [
     route: '/education_preprimary',
     methods: ['GET', 'POST'],
     url: 'https://andmed.stat.ee/api/v1/en/stat/HT042'
-  }
+  },
+  {
+    route: '/pensioners',
+    methods: ['GET', 'POST'],
+    url: 'https://andmed.stat.ee/api/v1/en/stat/SK12'
+  },
 ];
 
 
