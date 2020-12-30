@@ -12,7 +12,7 @@ export const schemaCacheBuster = new Subject<void>();
 export class SearchService {
   public searchResponse = new Subject<SearchResponse>();
 
-  constructor(private apiService: ApiService) {
+  constructor(private readonly apiService: ApiService) {
   }
 
   @Cacheable({cacheBusterObserver: schemaCacheBuster})
