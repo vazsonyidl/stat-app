@@ -46,7 +46,7 @@ export class MapComponent implements OnDestroy, AfterViewInit {
     }).setView([58.65, 25.50], 6.5);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://openmaptiles.org/">OpenMapTiles</a>',
+      attribution: '&copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a>',
       maxZoom: 10,
     }).addTo(this.constructedMap);
   }

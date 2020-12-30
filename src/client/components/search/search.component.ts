@@ -1,9 +1,13 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {BehaviorSubject, Subject} from 'rxjs';
-import {switchMap, takeUntil, tap} from 'rxjs/operators';
+import {MatSelectChange} from '@angular/material/select';
+
+import {BehaviorSubject, EMPTY, Observable, Subject} from 'rxjs';
+import {catchError, take, takeUntil, tap} from 'rxjs/operators';
 
 import {SearchService, schemaCacheBuster} from './search.service';
+import {NotificationService} from '../../services/notification.service';
 import {allowedMultipleSelection, searchSchema} from './search.const';
 import {NameUrlPair, SearchResponse, SearchSchemaVariable, TransformedSchema} from './search.interface';
 
@@ -21,16 +25,12 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private destroy = new Subject<boolean>();
 
-  constructor(private readonly searchService: SearchService) {
+  constructor(private readonly searchService: SearchService,
+              private readonly notificationService: NotificationService) {
   }
 
   public ngOnInit(): void {
     this.availableTypes.next(searchSchema.type);
-    this.typeFormControl.valueChanges.pipe(
-      takeUntil(this.destroy),
-      switchMap((selectedTypeUrl: string) => this.searchService.getSchema(selectedTypeUrl)),
-      tap((results: Array<SearchSchemaVariable>) => this.setUpControls(results)),
-    ).subscribe();
   }
 
   public ngOnDestroy(): void {
@@ -46,6 +46,15 @@ export class SearchComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
+  public handleSchemaChange(selection: MatSelectChange): void {
+    this.searchService.getSchema(selection.value).pipe(
+      takeUntil(this.destroy),
+      take(1),
+      tap((results: Array<SearchSchemaVariable>) => this.setUpControls(results)),
+      catchError((error: HttpErrorResponse) => this.handleError(error))
+    ).subscribe();
+  }
+
   private setUpControls = (results: Array<SearchSchemaVariable>) => {
     this.removeAllControl();
     this.registerControlsOnForm(results);
@@ -58,7 +67,20 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  private transformOptions(results: Array<SearchSchemaVariable>): Array<TransformedSchema> {
+  private removeAllControl(): void {
+    for (const option of this.options.value) {
+      this.formGroup.removeControl(option?.code);
+    }
+  }
+
+  private handleError = (error: HttpErrorResponse): Observable<never> => {
+    this.notificationService.attachNotification(error);
+    this.removeAllControl();
+    this.options.next([]);
+    return EMPTY;
+  };
+
+  private transformOptions(results: Array<SearchSchemaVariable> = []): Array<TransformedSchema> {
     return results.map(resp => ({
       code: resp?.code,
       text: resp?.text,
@@ -68,11 +90,5 @@ export class SearchComponent implements OnInit, OnDestroy {
       }, {}),
       multiple: allowedMultipleSelection.includes(resp?.text)
     }));
-  }
-
-  private removeAllControl(): void {
-    for (const option of this.options.value) {
-      this.formGroup.removeControl(option?.code);
-    }
   }
 }
