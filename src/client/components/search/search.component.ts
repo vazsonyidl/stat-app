@@ -1,15 +1,16 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatSelectChange} from '@angular/material/select';
 
 import {BehaviorSubject, EMPTY, Observable, Subject} from 'rxjs';
-import {catchError, take, takeUntil, tap} from 'rxjs/operators';
+import {catchError, finalize, take, takeUntil, tap} from 'rxjs/operators';
 
 import {SearchService, schemaCacheBuster} from './search.service';
 import {NotificationService} from '../../services/notification.service';
 import {allowedMultipleSelection, searchSchema} from './search.const';
 import {NameUrlPair, SearchResponse, SearchSchemaVariable, TransformedSchema} from './search.interface';
+import {OverlayService} from '../../services/overlay.service';
 
 @Component({
   selector: 'app-search',
@@ -22,11 +23,14 @@ export class SearchComponent implements OnInit, OnDestroy {
   public typeFormControl = new FormControl('');
   public availableTypes = new BehaviorSubject<Array<NameUrlPair>>([]);
   public options = new BehaviorSubject<Array<TransformedSchema>>([]);
+  @ViewChild('container') container: ElementRef;
 
   private destroy = new Subject<boolean>();
 
-  constructor(private readonly searchService: SearchService,
-              private readonly notificationService: NotificationService) {
+  constructor(
+    private readonly searchService: SearchService,
+    private readonly notificationService: NotificationService,
+    private readonly overlayService: OverlayService) {
   }
 
   public ngOnInit(): void {
@@ -47,10 +51,12 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public handleSchemaChange(selection: MatSelectChange): void {
+    this.overlayService.attach(this.container.nativeElement);
     this.searchService.getSchema(selection.value).pipe(
       takeUntil(this.destroy),
       take(1),
       tap((results: Array<SearchSchemaVariable>) => this.setUpControls(results)),
+      finalize(() => this.overlayService.detach()),
       catchError((error: HttpErrorResponse) => this.handleError(error))
     ).subscribe();
   }

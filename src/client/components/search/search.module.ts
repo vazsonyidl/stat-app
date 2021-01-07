@@ -6,6 +6,8 @@ import {MatButtonModule} from '@angular/material/button';
 
 import {SearchComponent} from './search.component';
 import {SearchService} from './search.service';
+import {OverlayService} from '../../services/overlay.service';
+import {OverlayModule} from '../overlay/overlay.module';
 
 
 @NgModule({
@@ -13,10 +15,11 @@ import {SearchService} from './search.service';
     CommonModule,
     MatSelectModule,
     MatButtonModule,
+    OverlayModule,
     ReactiveFormsModule
   ],
   declarations: [SearchComponent],
-  providers: [SearchService],
+  providers: [SearchService, OverlayService],
   exports: [SearchComponent]
 })
 export class SearchModule { }

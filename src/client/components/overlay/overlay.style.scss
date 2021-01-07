@@ -1,0 +1,6 @@
+@import 'src/client/styles/_styles';
+
+:host {
+  background-color: $overlay-color;
+  width: 100%;
+}

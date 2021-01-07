@@ -6,6 +6,7 @@ import {MapModule} from '../../components/map/map.module';
 import {SearchModule} from '../../components/search/search.module';
 import {NotificationModule} from '../../components/notification/notification.module';
 import {ApiService} from '../../services/api.service';
+import {OverlayModule} from '../../components/overlay/overlay.module';
 
 @NgModule({
   declarations: [MainPageComponent],
@@ -13,7 +14,8 @@ import {ApiService} from '../../services/api.service';
     CommonModule,
     MapModule,
     SearchModule,
-    NotificationModule
+    NotificationModule,
+    OverlayModule
   ],
   providers: [ApiService]
 })
