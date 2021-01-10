@@ -44,14 +44,18 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public onSearch(): void {
+    this.overlayService.attach(this.container?.nativeElement);
+
     this.searchService.search(this.typeFormControl.value, this.formGroup.value).pipe(
       takeUntil(this.destroy),
-      tap((response: SearchResponse) => this.searchService.searchResponse.next(response))
+      tap((response: SearchResponse) => this.searchService.searchResponse.next(response)),
+      finalize(() => this.overlayService.detach())
     ).subscribe();
   }
 
   public handleSchemaChange(selection: MatSelectChange): void {
-    this.overlayService.attach(this.container.nativeElement);
+    this.overlayService.attach(this.container?.nativeElement);
+
     this.searchService.getSchema(selection.value).pipe(
       takeUntil(this.destroy),
       take(1),
