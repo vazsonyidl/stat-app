@@ -3,11 +3,11 @@ import {HttpClientModule} from '@angular/common/http';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-import {AppComponent} from '../components/app/app.component';
-import {HeaderModule} from '../components/header/header.module';
-import {MainPageModule} from '../pages/main/main.module';
+import {AppComponent, HeaderModule} from 'components';
+import {MainPageModule} from 'pages/main/main.module';
+import {ChartModule} from 'pages/chart/chart.module';
 
-import {rootConfig} from '../configs/routing/routing';
+import {rootConfig} from 'configs/routing/routing';
 
 @NgModule({
   declarations: [
@@ -16,6 +16,7 @@ import {rootConfig} from '../configs/routing/routing';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    ChartModule,
     HttpClientModule,
     HeaderModule,
     MainPageModule,

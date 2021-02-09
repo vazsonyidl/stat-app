@@ -20,7 +20,3 @@ export const searchSchema: SearchSchemaInterface = {
     },
   ]
 };
-
-export const allowedMultipleSelection = [
-  'County'
-];

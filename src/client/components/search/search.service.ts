@@ -3,7 +3,7 @@ import {Observable, Subject} from 'rxjs';
 import {pluck} from 'rxjs/operators';
 import {Cacheable} from 'ts-cacheable';
 
-import {ApiService} from '../../services/api.service';
+import {ApiService} from 'services/api.service';
 import {SearchResponse, SearchSchemaVariable} from './search.interface';
 
 export const schemaCacheBuster = new Subject<void>();

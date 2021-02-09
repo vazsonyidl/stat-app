@@ -23,9 +23,10 @@ export class MapComponent implements OnDestroy, AfterViewInit {
   private destroy = new Subject<boolean>();
   @ViewChild('map', {static: true}) private map: ElementRef;
 
-  constructor(searchService: SearchService,
-              private readonly mapService: MapService) {
-
+  constructor(
+    searchService: SearchService,
+    private readonly mapService: MapService
+  ) {
     searchService.searchResponse.pipe(
       takeUntil(this.destroy),
       filter(response => !!response),

@@ -1,3 +1,8 @@
+export enum MultipleSelectionEnum {
+  YEAR = 'Year',
+  COUNTY = 'County'
+}
+
 export interface SearchSchemaInterface {
   type: Array<NameUrlPair>;
 }
