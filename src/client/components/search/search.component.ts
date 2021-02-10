@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatSelectChange} from '@angular/material/select';
@@ -7,10 +7,17 @@ import {BehaviorSubject, EMPTY, Observable, Subject} from 'rxjs';
 import {catchError, finalize, take, takeUntil, tap} from 'rxjs/operators';
 
 import {SearchService, schemaCacheBuster} from './search.service';
-import {NotificationService} from '../../services/notification.service';
-import {allowedMultipleSelection, searchSchema} from './search.const';
-import {NameUrlPair, SearchResponse, SearchSchemaVariable, TransformedSchema} from './search.interface';
-import {OverlayService} from '../../services/overlay.service';
+import {NotificationService} from 'services/notification.service';
+import {OverlayService} from 'services/overlay.service';
+
+import {searchSchema} from './search.const';
+import {
+  MultipleSelectionEnum,
+  NameUrlPair,
+  SearchResponse,
+  SearchSchemaVariable,
+  TransformedSchema
+} from './search.interface';
 
 @Component({
   selector: 'app-search',
@@ -23,6 +30,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   public typeFormControl = new FormControl('');
   public availableTypes = new BehaviorSubject<Array<NameUrlPair>>([]);
   public options = new BehaviorSubject<Array<TransformedSchema>>([]);
+
+  @Input() allowedMultipleSelection: Array<MultipleSelectionEnum> = [];
   @ViewChild('container') container: ElementRef;
 
   private destroy = new Subject<boolean>();
@@ -98,7 +107,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         acc[value] = resp?.valueTexts[index];
         return acc;
       }, {}),
-      multiple: allowedMultipleSelection.includes(resp?.text)
+      multiple: Object.values(this.allowedMultipleSelection).includes(resp?.text as MultipleSelectionEnum)
     }));
   }
 }
