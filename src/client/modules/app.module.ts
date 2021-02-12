@@ -5,7 +5,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {AppComponent, HeaderModule} from 'components';
 import {MainPageModule} from 'pages/main/main.module';
-import {ChartModule} from 'pages/chart/chart.module';
+import {StatisticModule} from 'pages/statistic/statistic.module';
 
 import {rootConfig} from 'configs/routing/routing';
 
@@ -16,7 +16,7 @@ import {rootConfig} from 'configs/routing/routing';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    ChartModule,
+    StatisticModule,
     HttpClientModule,
     HeaderModule,
     MainPageModule,

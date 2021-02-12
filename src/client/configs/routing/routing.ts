@@ -3,12 +3,12 @@ import {ModuleWithProviders} from '@angular/core';
 
 import {NotFoundPageComponent} from 'pages/not-found/not-found.page';
 import {MainPageComponent} from 'pages/main/main.page';
-import {ChartPageComponent} from 'pages/chart/chart.page';
+import {StatisticPageComponent} from 'pages/statistic/statistic.page';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'main'},
   {path: 'main', component: MainPageComponent},
-  {path: 'chart', component: ChartPageComponent},
+  {path: 'chart', component: StatisticPageComponent},
   {path: '404', component: NotFoundPageComponent},
   {path: '**', redirectTo: '404'}
 ];
