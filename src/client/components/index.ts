@@ -7,3 +7,5 @@ export {MapModule} from './map/map.module';
 export {NotificationModule} from './notification/notification.module';
 
 export {SearchModule} from './search/search.module';
+
+export {VisualizationModule} from './visualization/visualization.module';
