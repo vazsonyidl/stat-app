@@ -1,7 +1,13 @@
-import {AfterViewInit, Component, ElementRef} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit} from '@angular/core';
+import {Subject} from 'rxjs';
+import {takeUntil, tap} from 'rxjs/operators';
 
 import * as d3 from 'd3';
-import {chartData} from './chartdata.const';
+import {Selection} from 'd3/index';
+
+import {SearchService} from '../search/search.service';
+import {ResponseData, SearchResponse} from '../search/search.interface';
+import {PointValuePair} from './visualization.model';
 
 @Component({
   selector: 'app-visualization',
@@ -9,29 +15,34 @@ import {chartData} from './chartdata.const';
     <div class="linechart"></div>
   `
 })
-export class VisualizationComponent implements AfterViewInit {
+export class VisualizationComponent implements OnInit, OnDestroy {
+  private svg: Selection<SVGSVGElement, unknown, HTMLElement, unknown>;
+  private xAxis;
+  private yAxis;
+  private lineGroup;
 
   private width: number = 700;
-  private height: number = 700;
-  private margin = 50;
-  private readonly data: Array<{ value: number, date: string }>;
+  private readonly height: number = 700;
+  private readonly margin: number = 50;
 
-  public svg;
-  public svgInner;
-  public yScale;
-  public xScale;
-  public xAxis;
-  public yAxis;
-  public lineGroup;
+  private destroy: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private readonly chartElement: ElementRef) {
-    this.data = chartData;
+  constructor(
+    searchService: SearchService,
+    private readonly chartElement: ElementRef) {
+    searchService.searchResponse.pipe(
+      takeUntil(this.destroy),
+      tap((searchValue: SearchResponse) => this.drawChart(VisualizationComponent.transformSearchData(searchValue.data)))
+    ).subscribe();
   }
 
+  ngOnDestroy(): void {
+    this.destroy.next(true);
+    this.destroy.complete();
+  }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.initializeChart();
-    this.drawChart();
   }
 
   private initializeChart(): void {
@@ -41,29 +52,22 @@ export class VisualizationComponent implements AfterViewInit {
       .append('svg')
       .attr('height', this.height);
 
-    this.svgInner = this.svg
+    const svgInner = this.svg
       .append('g')
       .style('transform', 'translate(' + this.margin + 'px, ' + this.margin + 'px)');
 
-    this.yScale = d3.scaleLinear()
-      .domain([d3.max(this.data, d => d.value) + 1, d3.min(this.data, d => d.value) - 1])
-      .range([0, this.height - 2 * this.margin]);
-
-    this.yAxis = this.svgInner
+    this.yAxis = svgInner
       .append('g')
       .attr('id', 'y-axis')
       .style('transform', 'translate(' + this.margin + 'px, 0)');
 
-    this.xScale = d3.scaleTime()
-      .domain(d3.extent(this.data, d => new Date(d.date)));
-
-    this.xAxis = this.svgInner
+    this.xAxis = svgInner
       .append('g')
       .attr('id', 'x-axis')
       .style('transform', 'translate(0,' + (this.height - 2 * this.margin) + 'px)');
 
 
-    this.lineGroup = this.svgInner
+    this.lineGroup = svgInner
       .append('g')
       .append('path')
       .attr('id', 'line')
@@ -72,29 +76,44 @@ export class VisualizationComponent implements AfterViewInit {
       .style('stroke-width', '2px');
   }
 
-  private drawChart(): void {
+  private drawChart(data: Array<PointValuePair>): void {
     this.width = this.chartElement.nativeElement.getBoundingClientRect().width;
     this.svg.attr('width', this.width);
 
-    this.xScale.range([this.margin, this.width - 2 * this.margin]);
-
-    const _xAxis = d3.axisBottom(this.xScale)
-      .ticks(10)
-      .tickFormat(d3.timeFormat('%m / %Y'));
+    const _xAxis = d3.axisBottom(this.initializeXScale(data))
+      .ticks(data.length + 1)
+      .tickFormat(d3.timeFormat('%Y'));
     this.xAxis.call(_xAxis);
 
-    const _yAxis = d3.axisLeft(this.yScale);
+    const _yAxis = d3.axisLeft(this.initializeYScale(data));
     this.yAxis.call(_yAxis);
 
-    const line = d3.line()
-      .x(d => d[0])
-      .y(d => d[1])
-      .curve(d3.curveMonotoneX);
-
-    const points: Array<[number, number]> = this.data.map(
-      data => [this.xScale(new Date(data.date)), this.yScale(data.value)]
+    const points: Array<[number, number]> = data.map((_data: PointValuePair) =>
+      [this.initializeXScale(data)(new Date(_data.date)), this.initializeYScale(data)(_data.value)]
     );
 
-    this.lineGroup.attr('d', line(points));
+    this.lineGroup.attr('d', this.initializeLine()(points));
   }
+
+  private initializeLine = () => d3.line()
+    .x(XYPointPair => XYPointPair[0])
+    .y(XYPointPair => XYPointPair[1])
+    .curve(d3.curveMonotoneX);
+
+  private initializeYScale = (data: Array<PointValuePair>) =>
+    d3.scaleLinear()
+      .domain([d3.max(data, d => d.value) + 1, d3.min(data, d => d.value) - 1])
+      .range([0, this.height - 2 * this.margin]);
+
+  private initializeXScale = (data: Array<PointValuePair>) =>
+    d3.scaleTime()
+      .domain(d3.extent(data, d => new Date(d.date)))
+      .range([this.margin, this.width - 2 * this.margin]);
+
+  private static transformSearchData = (searchData: Array<ResponseData>): Array<PointValuePair> =>
+    searchData.reduce((acc, current: ResponseData) => {
+      const year = current.key.filter((key: string) => key.match(/\d{4}/g));
+      acc.push({value: +current.values.join(''), date: year.join('')});
+      return acc;
+    }, []);
 }
