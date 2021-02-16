@@ -31,6 +31,10 @@ export class VisualizationComponent implements OnInit, OnDestroy {
   constructor(
     private readonly searchService: SearchService,
     private readonly chartElement: ElementRef) {
+  }
+
+  ngOnInit(): void {
+    this.initializeChart();
     this.searchService.searchResponse.pipe(
       takeUntil(this.destroy),
       filter(response => !!response),
@@ -38,11 +42,8 @@ export class VisualizationComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  ngOnInit(): void {
-    this.initializeChart();
-  }
-
   ngOnDestroy(): void {
+    this.searchService.searchResponse.next(null);
     this.destroy.next(true);
     this.destroy.complete();
   }
@@ -91,7 +92,7 @@ export class VisualizationComponent implements OnInit, OnDestroy {
 
   private drawChart(data: Array<PointValuePair>): void {
     this.width = this.chartElement.nativeElement.getBoundingClientRect().width;
-    this.svg.attr('width', this.width);
+    this.svg?.attr('width', this.width);
 
     const _xAxis = d3.axisBottom(this.initializeXScale(data))
       .ticks(data.length + 1)
