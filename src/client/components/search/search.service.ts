@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {pluck} from 'rxjs/operators';
 import {Cacheable} from 'ts-cacheable';
 
@@ -10,7 +10,7 @@ export const schemaCacheBuster = new Subject<void>();
 
 @Injectable()
 export class SearchService {
-  public searchResponse = new Subject<SearchResponse>();
+  public searchResponse = new BehaviorSubject<SearchResponse>(null);
 
   constructor(private readonly apiService: ApiService) {
   }

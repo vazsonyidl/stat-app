@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {filter, tap, map, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import * as L from 'leaflet';
@@ -17,28 +17,25 @@ import {Counties, CountyFeature} from './map.interface';
     }
   `]
 })
-export class MapComponent implements OnDestroy, AfterViewInit {
+export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   private constructedMap;
   private geoJsonLayer;
   private destroy = new Subject<boolean>();
   @ViewChild('map', {static: true}) private map: ElementRef;
 
   constructor(
-    searchService: SearchService,
-    private readonly mapService: MapService
-  ) {
-    searchService.searchResponse.pipe(
+    private readonly searchService: SearchService,
+    private readonly mapService: MapService) {
+  }
+
+  ngOnInit() {
+    this.searchService.searchResponse.pipe(
       takeUntil(this.destroy),
       filter(response => !!response),
       map((response: SearchResponse) => this.transformResponse(response)),
       map((response) => this.mapService.filterCounties(response.data)),
       tap((mapData: Counties) => this.setLayers(mapData))
     ).subscribe();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy.next(true);
-    this.destroy.complete();
   }
 
   ngAfterViewInit(): void {
@@ -50,6 +47,12 @@ export class MapComponent implements OnDestroy, AfterViewInit {
       attribution: '&copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a>',
       maxZoom: 10,
     }).addTo(this.constructedMap);
+  }
+
+  ngOnDestroy(): void {
+    this.searchService.searchResponse.next(null);
+    this.destroy.next(true);
+    this.destroy.complete();
   }
 
   private setLayers = (mapData: Counties): void => {
