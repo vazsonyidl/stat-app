@@ -6,8 +6,8 @@
       <a class="link" href="https://github.com/vazsonyidl/stat-app" target="_blank">Github</a>
     </span>
   </nav>
-  <div>
-    <span [routerLink]="'/main'">Map search</span>
-    <span [routerLink]="'/chart'">Chart visualization</span>
-  </div>
+  <nav mat-tab-nav-bar>
+    <span mat-tab-link [routerLink]="'/main'">Map search</span>
+    <span mat-tab-link [routerLink]="'/chart'">Chart visualization</span>
+  </nav>
 </ng-container>

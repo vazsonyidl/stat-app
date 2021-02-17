@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {filter, tap, map, takeUntil} from 'rxjs/operators';
+import {filter, tap, map, takeUntil, skip} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import * as L from 'leaflet';
 
@@ -10,7 +10,7 @@ import {Counties, CountyFeature} from './map.interface';
 
 @Component({
   selector: 'app-map',
-  templateUrl: './map.template.html',
+  template: `<div #map class="map"></div>`,
   styles: [`
     .map {
       height: 700px;
@@ -31,6 +31,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.searchService.searchResponse.pipe(
       takeUntil(this.destroy),
+      skip(1),
       filter(response => !!response),
       map((response: SearchResponse) => this.transformResponse(response)),
       map((response) => this.mapService.filterCounties(response.data)),
@@ -50,7 +51,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.searchService.searchResponse.next(null);
     this.destroy.next(true);
     this.destroy.complete();
   }

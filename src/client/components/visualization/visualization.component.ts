@@ -1,6 +1,6 @@
 import {Component, ElementRef, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
-import {filter, takeUntil, tap} from 'rxjs/operators';
+import {filter, skip, takeUntil, tap} from 'rxjs/operators';
 
 import * as d3 from 'd3';
 import {Selection} from 'd3/index';
@@ -37,13 +37,13 @@ export class VisualizationComponent implements OnInit, OnDestroy {
     this.initializeChart();
     this.searchService.searchResponse.pipe(
       takeUntil(this.destroy),
+      skip(1),
       filter(response => !!response),
       tap((searchValue: SearchResponse) => this.drawChart(this.transformSearchData(searchValue.data)))
     ).subscribe();
   }
 
   ngOnDestroy(): void {
-    this.searchService.searchResponse.next(null);
     this.destroy.next(true);
     this.destroy.complete();
   }
