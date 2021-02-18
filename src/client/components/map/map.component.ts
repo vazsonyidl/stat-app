@@ -41,6 +41,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.constructedMap = L.map(this.map.nativeElement, {
+      minZoom: 6,
+      maxZoom: 8,
       maxBounds: [[70, -10], [50, 50]]
     }).setView([58.65, 25.50], 6.5);
 
@@ -48,6 +50,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       attribution: '&copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a>',
       maxZoom: 10,
     }).addTo(this.constructedMap);
+
+    L.control.scale().addTo(this.constructedMap);
   }
 
   ngOnDestroy(): void {
