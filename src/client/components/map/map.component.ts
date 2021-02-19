@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {filter, tap, map, takeUntil} from 'rxjs/operators';
+import {filter, tap, map, takeUntil, skip} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import * as L from 'leaflet';
 
@@ -10,7 +10,7 @@ import {Counties, CountyFeature} from './map.interface';
 
 @Component({
   selector: 'app-map',
-  templateUrl: './map.template.html',
+  template: `<div #map class="map"></div>`,
   styles: [`
     .map {
       height: 700px;
@@ -31,6 +31,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.searchService.searchResponse.pipe(
       takeUntil(this.destroy),
+      skip(1),
       filter(response => !!response),
       map((response: SearchResponse) => this.transformResponse(response)),
       map((response) => this.mapService.filterCounties(response.data)),
@@ -40,6 +41,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.constructedMap = L.map(this.map.nativeElement, {
+      minZoom: 6,
+      maxZoom: 8,
       maxBounds: [[70, -10], [50, 50]]
     }).setView([58.65, 25.50], 6.5);
 
@@ -47,10 +50,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       attribution: '&copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a>',
       maxZoom: 10,
     }).addTo(this.constructedMap);
+
+    L.control.scale().addTo(this.constructedMap);
   }
 
   ngOnDestroy(): void {
-    this.searchService.searchResponse.next(null);
     this.destroy.next(true);
     this.destroy.complete();
   }
