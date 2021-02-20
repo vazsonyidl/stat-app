@@ -6,5 +6,5 @@ import {MultipleSelectionEnum} from 'components/search/search.interface';
   templateUrl: 'statistic.template.html'
 })
 export class StatisticPageComponent {
-  public allowedMultipleSelection: Array<MultipleSelectionEnum> = [MultipleSelectionEnum.YEAR];
+  public readonly allowedMultipleSelection: Array<MultipleSelectionEnum> = [MultipleSelectionEnum.YEAR];
 }

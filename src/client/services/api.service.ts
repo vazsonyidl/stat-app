@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {EMPTY, Observable} from 'rxjs';
 import {catchError, share} from 'rxjs/operators';
+
 import {NotificationService} from './notification.service';
 
 interface RequestOptions {

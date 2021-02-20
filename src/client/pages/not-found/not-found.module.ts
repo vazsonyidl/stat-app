@@ -1,4 +1,5 @@
 import {NgModule} from '@angular/core';
+
 import {NotFoundPageComponent} from './not-found.page';
 
 @NgModule({

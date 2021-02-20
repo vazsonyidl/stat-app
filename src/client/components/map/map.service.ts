@@ -4,7 +4,6 @@ import {countyData} from './counties.const';
 
 @Injectable()
 export class MapService {
-
   public getColor = (d): string => {
     return d > 1000 ? '#800026' :
       d > 500 ? '#BD0026' :

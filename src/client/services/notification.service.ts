@@ -32,9 +32,13 @@ export class NotificationService {
     positionStrategy: this.overlay.position()?.global().right('8px').top('4px')
   });
 
-  private attachOverlay = (error: HttpErrorResponse): ComponentRef<NotificationComponent> => this.overlayRef.attach(
-    new ComponentPortal(NotificationComponent, null, this.createInjector(`${error.status} - ${error.statusText}`))
-  );
+  private attachOverlay = (error: HttpErrorResponse): ComponentRef<NotificationComponent> =>
+    this.overlayRef.attach(new ComponentPortal(
+      NotificationComponent,
+      null,
+      this.createInjector(`${error.status} - ${error.statusText}`)
+      )
+    );
 
   private destroyOverlay = (): void => {
     this.overlayRef.dispose();
