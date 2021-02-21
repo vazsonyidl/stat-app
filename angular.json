@@ -11,13 +11,13 @@
         }
       },
       "root": "",
-      "sourceRoot": "src",
+      "sourceRoot": "src/client",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/stat-app",
+            "outputPath": "build",
             "index": "src/client/index.html",
             "main": "src/client/main.ts",
             "polyfills": "src/client/polyfills.ts",
@@ -52,14 +52,8 @@
               "buildOptimizer": true,
               "budgets": [
                 {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                },
-                {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "6kb"
                 }
               ]
             }

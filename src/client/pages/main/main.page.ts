@@ -6,5 +6,5 @@ import {MultipleSelectionEnum} from 'components/search/search.interface';
   templateUrl: './main.template.html',
 })
 export class MainPageComponent {
-  public allowedMultipleSelection: Array<MultipleSelectionEnum> = [MultipleSelectionEnum.COUNTY];
+  public readonly allowedMultipleSelection: Array<MultipleSelectionEnum> = [MultipleSelectionEnum.COUNTY];
 }

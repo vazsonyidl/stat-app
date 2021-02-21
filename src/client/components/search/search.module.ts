@@ -4,9 +4,9 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
 
+import {OverlayService} from 'services/overlay.service';
 import {SearchComponent} from './search.component';
 import {SearchService} from './search.service';
-import {OverlayService} from '../../services/overlay.service';
 import {OverlayModule} from '../overlay/overlay.module';
 
 
@@ -22,4 +22,5 @@ import {OverlayModule} from '../overlay/overlay.module';
   providers: [SearchService, OverlayService],
   exports: [SearchComponent]
 })
-export class SearchModule { }
+export class SearchModule {
+}

@@ -2,7 +2,7 @@ import express from 'express';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 
-import {setAppRoutes} from './routes/routes.js';
+import {setAppRoutes, setInitialCountiesRoute} from './routes/routes.js';
 
 const app = express();
 const port = process.env.PORT || 2000;
@@ -16,5 +16,6 @@ app.use(session({
 }),
 );
 
+setInitialCountiesRoute(app);
 setAppRoutes(app);
 app.listen(port, () => console.log(`Server running on: ${port}`));

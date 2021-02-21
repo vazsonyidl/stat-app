@@ -22,8 +22,8 @@ export class VisualizationComponent implements OnInit, OnDestroy {
   private lineGroup;
   private dotGroup;
 
-  private width: number = 700;
-  private readonly height: number = 700;
+  private initialWidth: number = 700;
+  private readonly initialHeight: number = 700;
   private readonly margin: number = 50;
 
   private destroy: Subject<boolean> = new Subject<boolean>();
@@ -59,7 +59,7 @@ export class VisualizationComponent implements OnInit, OnDestroy {
       .select(this.chartElement.nativeElement)
       .select('.linechart')
       .append('svg')
-      .attr('height', this.height);
+      .attr('height', this.initialHeight);
 
     const svgInner = this.svg
       .append('g')
@@ -73,7 +73,7 @@ export class VisualizationComponent implements OnInit, OnDestroy {
     this.xAxis = svgInner
       .append('g')
       .attr('id', 'x-axis')
-      .style('transform', 'translate(0,' + (this.height - 2 * this.margin) + 'px)');
+      .style('transform', 'translate(0,' + (this.initialHeight - 2 * this.margin) + 'px)');
 
 
     this.lineGroup = svgInner
@@ -91,8 +91,8 @@ export class VisualizationComponent implements OnInit, OnDestroy {
   }
 
   private drawChart(data: Array<PointValuePair>): void {
-    this.width = this.chartElement.nativeElement.getBoundingClientRect().width;
-    this.svg?.attr('width', this.width);
+    this.initialWidth = this.chartElement.nativeElement.getBoundingClientRect().width;
+    this.svg?.attr('width', this.initialWidth);
 
     const _xAxis = d3.axisBottom(this.initializeXScale(data))
       .ticks(data.length + 1)
@@ -130,12 +130,12 @@ export class VisualizationComponent implements OnInit, OnDestroy {
   private initializeXScale = (data: Array<PointValuePair>) =>
     d3.scaleTime()
       .domain(d3.extent(data, d => new Date(d.date)))
-      .range([this.margin, this.width - 2 * this.margin]);
+      .range([this.margin, this.initialWidth - 2 * this.margin]);
 
   private initializeYScale = (data: Array<PointValuePair>) =>
     d3.scaleLinear()
       .domain([d3.max(data, d => d.value) + 1, d3.min(data, d => d.value) - 1])
-      .range([0, this.height - 2 * this.margin]);
+      .range([0, this.initialHeight - 2 * this.margin]);
 
   private transformSearchData = (searchData: Array<ResponseData>): Array<PointValuePair> =>
     searchData.reduce((acc, current: ResponseData) => {

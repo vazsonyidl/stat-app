@@ -8,6 +8,7 @@ import {MainPageModule} from 'pages/main/main.module';
 import {StatisticModule} from 'pages/statistic/statistic.module';
 
 import {rootConfig} from 'configs/routing/routing';
+import {InitModule} from './init.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import {rootConfig} from 'configs/routing/routing';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    InitModule,
     StatisticModule,
     HttpClientModule,
     HeaderModule,

@@ -3,8 +3,40 @@
 <head>
   <meta charset="utf-8">
   <title>Statistic 4You</title>
-  <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    var _callBackFunction = null;
+    var _globalInfo;
+    var _getInitialData = function (callBack) {
+      _callBackFunction = callBack;
+      if (_globalInfo) _callBackFunction(_globalInfo);
+    };
+
+    (function () {
+      var information = {};
+      function makeRequest(method, url, doneCallBack) {
+        var xhr = new XMLHttpRequest();
+        xhr.open(method, url);
+
+        xhr.onload = function () {
+          var XHRResponseType = xhr.getResponseHeader('Content-Type') || null;
+          if (XHRResponseType && XHRResponseType.indexOf('text/') !== -1) doneCallBack(null, xhr.response);
+          else doneCallBack(null, JSON.parse(xhr.response));
+
+          if (_callBackFunction) _callBackFunction(information);
+          else _globalInfo = information;
+        };
+        xhr.onerror = function () {
+          doneCallBack(xhr.response);
+        };
+        xhr.send();
+      }
+
+      makeRequest('GET', '/api/counties', function (error, data) {
+        information.counties = data;
+      });
+    })();
+  </script>
 </head>
 <body>
   <app-root></app-root>
