@@ -58,7 +58,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchService.search(this.typeFormControl.value, this.formGroup.value).pipe(
       takeUntil(this.destroy),
       tap((response: SearchResponse) => this.searchService.searchResponse.next(response)),
-      finalize(() => this.overlayService.detachOverlay())
+      finalize(() => this.overlayService.destroyOverlay())
     ).subscribe();
   }
 
@@ -69,7 +69,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy),
       take(1),
       tap((results: Array<SearchSchemaVariable>) => this.setUpControls(results)),
-      finalize(() => this.overlayService.detachOverlay()),
+      finalize(() => this.overlayService.destroyOverlay()),
       catchError((error: HttpErrorResponse) => this.handleError(error))
     ).subscribe();
   }
@@ -93,7 +93,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   private handleError = (error: HttpErrorResponse): Observable<never> => {
-    this.notificationService.attachNotification(error);
+    this.notificationService.displayNotification(error);
     this.removeAllControl();
     this.options.next([]);
     return EMPTY;

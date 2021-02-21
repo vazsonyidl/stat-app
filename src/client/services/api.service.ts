@@ -41,7 +41,7 @@ export class ApiService {
   public post(url: string, params: { [key: string]: string | Array<string> } = {}): Observable<any> {
     return this.http.post(url, {}, {...baseOptions, params}).pipe(
       catchError((error: HttpErrorResponse) => {
-        this.notificationService.attachNotification(error);
+        this.notificationService.displayNotification(error);
         return EMPTY;
       })
     );

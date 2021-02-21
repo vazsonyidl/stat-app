@@ -16,10 +16,7 @@ export class OverlayService {
     this.overlayRef.attach(new ComponentPortal(OverlayComponent));
   };
 
-  public detachOverlay = (): void => {
-    this.overlayRef.detach();
-    this.overlayRef = null;
-  };
+  public destroyOverlay = (): void => this.overlayRef.dispose();
 
   private createOverlayReference(element: HTMLElement): OverlayRef {
     return this.overlay.create({
