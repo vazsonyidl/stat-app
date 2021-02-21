@@ -1,6 +1,4 @@
-import {Counties} from './map.interface';
-
-export const countyData: Counties = {
+export const countyData = {
   type: 'FeatureCollection',
   features: [
     {

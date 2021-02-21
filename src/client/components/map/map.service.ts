@@ -1,9 +1,14 @@
 import {Injectable} from '@angular/core';
+import {pluck, take, tap} from 'rxjs/operators';
+
+import {CountyStore} from 'stores/county.store';
 import {Counties} from './map.interface';
-import {countyData} from './counties.const';
 
 @Injectable()
 export class MapService {
+  constructor(private readonly countyStore: CountyStore) {
+  }
+
   public getColor = (d): string => {
     return d > 1000 ? '#800026' :
       d > 500 ? '#BD0026' :
@@ -25,6 +30,13 @@ export class MapService {
   });
 
   public filterCounties = (responseData): Counties => {
+    let countyData: Counties = {type: null, features: []};
+    this.countyStore.state$.pipe(
+      take(1),
+      pluck('counties'),
+      tap((countiesData: Counties) => countyData = countiesData)
+    ).subscribe();
+
     const filteredFeatures = countyData?.features?.filter(
       feature => responseData.some(data => data?.key.includes(feature?.properties?.code))
     ).map(feature => ({
