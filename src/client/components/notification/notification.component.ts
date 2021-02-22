@@ -9,7 +9,7 @@ import {CONTAINER_DATA} from './notification.const';
 export class NotificationComponent {
   @Output() readonly disappearAnimationEnded: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(@Inject(CONTAINER_DATA) public notificationData: string) {
+  constructor(@Inject(CONTAINER_DATA) public readonly notificationData: string) {
   }
 
   onAnimationEnd(event: AnimationEvent) {
