@@ -28,7 +28,7 @@ export interface TransformedSchema {
 
 export interface SearchResponse {
   columns: Array<ResponseColumns>;
-  comment: Array<unknown>;
+  comments: Array<unknown>;
   data: Array<ResponseData>;
   metadata: Array<ResponseMetaData>;
 }

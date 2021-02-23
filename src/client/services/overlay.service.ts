@@ -27,7 +27,7 @@ export class OverlayService {
         overlayY: 'top'
       }]),
       width: '100%',
-      height: element.offsetHeight
+      height: element?.offsetHeight
     });
   }
 }
