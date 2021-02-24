@@ -36,6 +36,7 @@
     "import-blacklist": false,
     "new-parens": true,
     "array-type": [true, "generic"],
+    "object-literal-key-quotes": [true, "as-needed"],
     "max-line-length": [
       true,
       {
