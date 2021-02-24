@@ -9,7 +9,6 @@ import {SearchComponent} from './search.component';
 import {SearchService} from './search.service';
 import {OverlayModule} from '../overlay/overlay.module';
 
-
 @NgModule({
   imports: [
     CommonModule,
