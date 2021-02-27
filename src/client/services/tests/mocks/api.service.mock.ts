@@ -1,5 +1,4 @@
 import {SearchSchemaVariable} from 'components/search/search.interface';
-import {HttpErrorResponse} from '@angular/common/http';
 
 export const dummySchema: Array<SearchSchemaVariable> = [
   {
