@@ -1,5 +1,6 @@
-import {Component, EventEmitter, Inject, Output} from '@angular/core';
+import {Component, Inject, Output} from '@angular/core';
 import {CONTAINER_DATA} from './notification.const';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-notification',
@@ -7,12 +8,12 @@ import {CONTAINER_DATA} from './notification.const';
   styleUrls: ['./notification.style.scss']
 })
 export class NotificationComponent {
-  @Output() readonly disappearAnimationEnded: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() readonly disappearAnimationEnded: Subject<boolean> = new Subject<boolean>();
 
   constructor(@Inject(CONTAINER_DATA) public readonly notificationData: string) {
   }
 
   onAnimationEnd(event: AnimationEvent) {
-    if (event.animationName === 'disappear-notification') this.disappearAnimationEnded.emit(true);
+    if (event.animationName === 'disappear-notification') this.disappearAnimationEnded.next(true);
   }
 }

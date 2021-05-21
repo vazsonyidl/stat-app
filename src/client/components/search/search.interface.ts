@@ -33,6 +33,14 @@ export interface SearchResponse {
   metadata: Array<ResponseMetaData>;
 }
 
+export interface SearchResponseData {
+  data: Array<{
+    key: Array<string>;
+    year: Array<string>;
+    value: number;
+  }>;
+}
+
 export interface ResponseData {
   key: Array<string>;
   values: Array<string>;

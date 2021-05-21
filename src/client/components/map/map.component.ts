@@ -5,7 +5,7 @@ import * as L from 'leaflet';
 
 import {MapService} from './map.service';
 import {SearchService} from '../search/search.service';
-import {SearchResponse} from '../search/search.interface';
+import {SearchResponse, SearchResponseData} from '../search/search.interface';
 import {Counties, CountyFeature} from './map.interface';
 
 @Component({
@@ -34,7 +34,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       skip(1),
       filter(response => !!response),
       map((response: SearchResponse) => this.transformResponse(response)),
-      map((response) => this.mapService.filterCounties(response.data)),
+      map((response: SearchResponseData) => this.mapService.filterCounties(response.data)),
       tap((mapData: Counties) => this.setLayers(mapData))
     ).subscribe();
   }
@@ -70,7 +70,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private removeLayer = (layer: any) => this.constructedMap.removeLayer(layer);
 
-  private transformResponse = (response: SearchResponse) => {
+  private transformResponse = (response: SearchResponse): SearchResponseData => {
     const responseData = response.data.map((value => ({
         key: value.key.filter(val => val.match(/^[0-9]{2}$/g)),
         year: value.key.filter(val => val.match(/^[0-9]{4}$/g)),
