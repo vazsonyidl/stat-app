@@ -1,4 +1,4 @@
-import {inject, TestBed} from '@angular/core/testing';
+import {fakeAsync, flush, inject, TestBed} from '@angular/core/testing';
 import {HttpRequest} from '@angular/common/http';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 
@@ -12,7 +12,7 @@ class MockNotificationService {
   };
 }
 
-describe('Api Service', () => {
+fdescribe('Api Service', () => {
   let service: ApiService;
   let httpMock: HttpTestingController;
 
@@ -44,11 +44,12 @@ describe('Api Service', () => {
     expect(notifService instanceof MockNotificationService).toBeTruthy();
   }));
 
-  it('should call HTTP GET', () => {
+  it('should call HTTP GET', (done) => {
     const dummyUrl = 'dummySchema';
     service.get(dummyUrl).subscribe(response => {
       expect(response).toBeDefined();
       expect(response).toBe(dummySchema);
+      done();
     });
 
     const requestMatch = createDummyRequest('GET', dummyUrl);
@@ -64,17 +65,17 @@ describe('Api Service', () => {
     httpMock.expectNone(requestMatch);
   });
 
-  it('should call POST method', () => {
+  it('should call POST method', fakeAsync(() => {
     const dummyUrl = 'dummyPostUri';
     service.post(dummyUrl).subscribe(response => {
       expect(response).toBeDefined();
       expect(response).toEqual(dummySearchResult);
     });
-
     const requestMatch = createDummyRequest('POST', dummyUrl);
     const postRequest = httpMock.expectOne(requestMatch);
     postRequest.flush(dummySearchResult);
-  });
+    flush();
+  }));
 
   it('should error POST method', inject([NotificationService], (notifService: MockNotificationService) => {
     const dummyUrl = 'dummyPostUri';
