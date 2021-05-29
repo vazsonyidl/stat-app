@@ -32,6 +32,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public options = new BehaviorSubject<Array<TransformedSchema>>([]);
 
   @Input() allowedMultipleSelection: Array<MultipleSelectionEnum> = [];
+  // TODO: Move this container to constructor as ElementRef
   @ViewChild('container') container: ElementRef;
 
   private destroy = new Subject<boolean>();

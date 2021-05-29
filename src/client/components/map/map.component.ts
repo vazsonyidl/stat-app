@@ -28,7 +28,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly mapService: MapService) {
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.searchService.searchResponse.pipe(
       takeUntil(this.destroy),
       skip(1),
@@ -39,7 +39,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     ).subscribe();
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.constructedMap = L.map(this.map.nativeElement, {
       minZoom: 6,
       maxZoom: 8,
@@ -54,7 +54,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     L.control.scale().addTo(this.constructedMap);
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.destroy.next(true);
     this.destroy.complete();
   }
