@@ -4,7 +4,7 @@ import {NotFoundPageComponent} from './not-found.page';
 
 @NgModule({
   declarations: [NotFoundPageComponent],
-  exports: [NotFoundPageComponent],
+  exports: [NotFoundPageComponent]
 })
 export class NotFoundPageModule {
 }

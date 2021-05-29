@@ -1,6 +1,6 @@
 <div #container class="container">
   <div class="search-params">
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline">
       <mat-label>Type</mat-label>
       <mat-select [formControl]="typeFormControl" (selectionChange)="handleSchemaChange($event)">
         <mat-option *ngFor="let type of availableTypes | async" [value]="type.url">{{type.name}}</mat-option>
@@ -8,7 +8,7 @@
     </mat-form-field>
     <ng-container [formGroup]="formGroup" *ngIf="options | async as _options">
       <mat-form-field *ngFor="let option of _options"
-                      appearance="fill">
+                      appearance="outline">
         <mat-label>{{option?.text}}</mat-label>
         <mat-select [formControlName]="option.code" [multiple]="option?.multiple">
           <mat-option *ngFor="let selectOption of option?.value | keyvalue"

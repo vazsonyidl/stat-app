@@ -9,7 +9,8 @@ export class MapService {
   constructor(private readonly countyStore: CountyStore) {
   }
 
-  public getColor = (d): string => {
+  // TODO: Refactor this to calculate color based on ratio
+  public getColor = (d: number): string => {
     return d > 1000 ? '#800026' :
       d > 500 ? '#BD0026' :
         d > 200 ? '#E31A1C' :
@@ -30,6 +31,7 @@ export class MapService {
   });
 
   public filterCounties = (responseData): Counties => {
+    // TODO: Refactor subscription - remove from service - handle this in the component
     let countyData: Counties = {type: null, features: []};
     this.countyStore.state$.pipe(
       take(1),

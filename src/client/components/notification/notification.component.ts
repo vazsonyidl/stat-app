@@ -4,7 +4,14 @@ import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-notification',
-  templateUrl: './notification.template.html',
+  template: `
+    <div class="container" (animationend)="onAnimationEnd($event)">
+      <div class="progress-bar"></div>
+      <div class="notification">
+        {{notificationData}}
+      </div>
+    </div>
+  `,
   styleUrls: ['./notification.style.scss']
 })
 export class NotificationComponent {
@@ -13,7 +20,7 @@ export class NotificationComponent {
   constructor(@Inject(CONTAINER_DATA) public readonly notificationData: string) {
   }
 
-  onAnimationEnd(event: AnimationEvent) {
+  public onAnimationEnd(event: AnimationEvent): void {
     if (event.animationName === 'disappear-notification') this.disappearAnimationEnded.next(true);
   }
 }
