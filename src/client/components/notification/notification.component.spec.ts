@@ -28,21 +28,21 @@ describe('Notification Component', () => {
   });
 
   it('should emit only when animation ended', () => {
-    jest.spyOn(component.disappearAnimationEnded, 'emit');
+    const animationEndNextSpy = jest.spyOn(component.disappearAnimationEnded, 'next');
     const animationEndEvent = {
       animationName: 'disappear-notification',
     };
 
     component.onAnimationEnd(animationEndEvent as AnimationEvent);
-    expect(component.disappearAnimationEnded.emit).toHaveBeenCalledWith(true);
-    expect(component.disappearAnimationEnded.emit).toHaveBeenCalledTimes(1);
+    expect(animationEndNextSpy).toHaveBeenCalledWith(true);
+    expect(animationEndNextSpy).toHaveBeenCalledTimes(1);
 
     animationEndEvent.animationName = null;
     component.onAnimationEnd(animationEndEvent as AnimationEvent);
-    expect(component.disappearAnimationEnded.emit).toHaveBeenCalledTimes(1);
+    expect(animationEndNextSpy).toHaveBeenCalledTimes(1);
 
     animationEndEvent.animationName = 'undefined';
     component.onAnimationEnd(animationEndEvent as AnimationEvent);
-    expect(component.disappearAnimationEnded.emit).toHaveBeenCalledTimes(1);
+    expect(animationEndNextSpy).toHaveBeenCalledTimes(1);
   });
 });
